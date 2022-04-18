@@ -1,0 +1,102 @@
+---
+title: "seedsDataset"
+author: "Dylan & Johannes"
+date: "4/18/2022"
+output: html_document
+---
+
+
+
+## dataframes 
+```{r}
+library(keras)
+library(tfdatasets)
+
+
+#Loading a csv file
+seedsdf <- read.csv("seeds_dataset.csv")
+
+# Various syntax for R dataframes
+summary(seedsdf)
+
+head(seedsdf)
+
+# You can refer to columns by name or by number:
+head(seedsdf[1]) # head takes the first few elements
+
+head(seedsdf$area)
+
+head(seedsdf["area"])
+```
+
+
+```{r}
+#You can refer to rows by numbers, note difference from columns:
+seedsdf[5,]
+
+#Ranges of columns:
+head(seedsdf[1:3])
+
+#Ranges of rows:
+seedsdf[1:3,]
+```
+
+
+## Splitting data into training and testing
+
+```{r}
+sample_size <- 160
+set.seed(1234) # setting random seed to make results repeatable
+
+picked <- sample(seq_len(nrow(seedsdf)),size = sample_size)
+training <- seedsdf[picked,]
+testing <- seedsdf[-picked,]
+
+
+# Changing y into categorical data (performing one-hot encoding)
+
+yTr <- to_categorical(training$variety, num_classes = 7)
+yTest <- to_categorical(testing$variety, num_classes = 7)
+
+```
+
+## Neural network for the iris example
+
+```{r}
+
+model = keras_model_sequential() %>%
+  layer_dense(units = 64, activation = "relu",input_shape=(7)) %>%
+  layer_dense(units = 64, activation = "relu") %>%
+  layer_dense(units = ncol(yTr), activation = "softmax")
+
+
+model %>% compile(
+  loss = "categorical_crossentropy",
+  optimizer = "adam", #optimizer_rmsprop(),
+  metrics = "accuracy"
+)
+
+xTr <- as.matrix(training[,1:7]) # need to convert to a matrix
+xTest <- as.matrix(testing[,1:7])
+
+model %>% 
+  fit(
+    x = xTr, # input is the first 4 columns of the dataframe
+    y = yTr, # label is the last column
+    epochs = 20
+  )
+
+```
+
+# Evaluate the model
+```{r}
+model %>% evaluate(xTest, yTest)
+
+# Predicting likelihood of all categories:
+result <- model %>% predict(xTest)
+
+result
+
+testing[,8]
+
+```
