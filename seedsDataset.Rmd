@@ -28,7 +28,7 @@ head(seedsdf$area)
 
 head(seedsdf["area"])
 ```
-## Exploring the distributions of feature values using kernel density plots
+## Explore the distributions of feature values using kernel density plots
 If multiple distributions are visible, a particular distribution may be associated with a category. 
 ```{r}
 for (i in 1:7) {
@@ -36,7 +36,14 @@ for (i in 1:7) {
 }
 
 ```
+## Explore correlation among features
+We should select one feature among each group of highly correlated features (>0.7?).
+```{r}
+# Use the R correlation function cor()
+# The all.obs option assumes our data frame has no missing values. Uses Pearson correlation testing by default.
+cor(seedsdf)
 
+```
 
 
 ```{r}
