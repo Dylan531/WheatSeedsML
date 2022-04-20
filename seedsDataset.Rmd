@@ -28,17 +28,26 @@ head(seedsdf$area)
 
 head(seedsdf["area"])
 ```
+## Exploring the distributions of feature values using kernel density plots
+If multiple distributions are visible, a particular distribution may be associated with a category. 
+```{r}
+for (i in 1:7) {
+  plot(density(seedsdf[,i]))
+}
+
+```
+
 
 
 ```{r}
 #You can refer to rows by numbers, note difference from columns:
-seedsdf[5,]
+#seedsdf[5,]
 
 #Ranges of columns:
-head(seedsdf[1:3])
+#head(seedsdf[1:3])
 
 #Ranges of rows:
-seedsdf[1:3,]
+#seedsdf[1:3,]
 ```
 
 
@@ -65,8 +74,8 @@ yTest <- to_categorical(testing$variety, num_classes = 7)
 ```{r}
 
 model = keras_model_sequential() %>%
-  layer_dense(units = 64, activation = "relu",input_shape=(7)) %>%
-  layer_dense(units = 64, activation = "relu") %>%
+  layer_dense(units = 128, activation = "relu",input_shape=(7)) %>%
+  layer_dense(units = 128, activation = "relu") %>%
   layer_dense(units = ncol(yTr), activation = "softmax")
 
 
@@ -83,7 +92,7 @@ model %>%
   fit(
     x = xTr, # input is the first 7 columns of the dataframe
     y = yTr, # label is the last column
-    epochs = 4
+    epochs = 50
   )
 
 ```
