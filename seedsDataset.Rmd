@@ -45,7 +45,7 @@ seedsdf[1:3,]
 ## Splitting data into training and testing
 
 ```{r}
-sample_size <- 160
+sample_size <- 150
 set.seed(1234) # setting random seed to make results repeatable
 
 picked <- sample(seq_len(nrow(seedsdf)),size = sample_size)
@@ -81,9 +81,9 @@ xTest <- as.matrix(testing[,1:7])
 
 model %>% 
   fit(
-    x = xTr, # input is the first 4 columns of the dataframe
+    x = xTr, # input is the first 7 columns of the dataframe
     y = yTr, # label is the last column
-    epochs = 20
+    epochs = 4
   )
 
 ```
