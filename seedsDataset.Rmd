@@ -136,4 +136,16 @@ result
 
 testing[,8]
 
+# Print table
+variable.content <- c(sample_size, layer.units, model.loss, model.optimizer, model.accuracy, model.epochs, input.shape, toString(training.subset), 5)
+data= matrix(variable.content, ncol=9, byrow=TRUE)
+
+# Add column names
+colnames(data) = c('Sample Size','Layer Units','Loss','Optimizer', 'Accuracy', 'Epochs', 'Input Shape', 'Feature Selection', 'Testing Accuracy')
+rownames(data) = c('')
+final=as.table(data)
+
+# display
+final
+
 ```
