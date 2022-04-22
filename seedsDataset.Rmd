@@ -127,7 +127,8 @@ model %>%
 
 # Evaluate the model
 ```{r}
-model %>% evaluate(xTest, yTest)
+score = model %>% evaluate(xTest, yTest, verbose = 1)
+
 
 # Predicting likelihood of all categories:
 result <- model %>% predict(xTest)
@@ -137,15 +138,15 @@ result
 testing[,8]
 
 # Print table
-variable.content <- c(sample_size, layer.units, model.loss, model.optimizer, model.accuracy, model.epochs, input.shape, toString(training.subset), 5)
-data= matrix(variable.content, ncol=9, byrow=TRUE)
+variable.content <- c(sample_size, layer.units, model.loss, model.optimizer, model.accuracy, model.epochs, input.shape, toString(training.subset), round(score[1], 4), round(score[2], 4))
+data= matrix(variable.content, ncol=10, byrow=TRUE)
 
 # Add column names
-colnames(data) = c('Sample Size','Layer Units','Loss','Optimizer', 'Accuracy', 'Epochs', 'Input Shape', 'Feature Selection', 'Testing Accuracy')
+colnames(data) = c('Sample Size','Layer Units','Loss','Optimizer', 'Accuracy', 'Epochs', 'Input Shape', 'Feature Selection', 'Test Loss', 'Test Accuracy')
 rownames(data) = c('')
-final=as.table(data)
+table=as.table(data)
 
 # display
-final
+table
 
 ```
