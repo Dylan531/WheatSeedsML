@@ -9,9 +9,9 @@ output: html_document
 
 ## dataframes 
 ```{r}
+set.seed(1234)
 library(keras)
 library(tfdatasets)
-library(caret)
 
 #Loading a csv file
 seedsdf <- read.csv("seeds_dataset.csv")
@@ -80,11 +80,10 @@ layer.units <- 128
 model.loss <- "categorical_crossentropy"
 model.optimizer <- "adam"
 model.accuracy <- "accuracy"
-model.epochs <- 50
+model.epochs <- 75
 input.shape <- 3
 training.subset <- c("area","asymmetry.cof","compactness")
 set.seed(1234) # setting random seed to make results repeatable
-tf.random.set_seed(1234)
 
 picked <- sample(seq_len(nrow(seedsdfProcessed)),size = sample_size)
 training <- seedsdf[picked,]
@@ -92,9 +91,10 @@ testing <- seedsdf[-picked,]
 
 
 # Changing y into categorical data (performing one-hot encoding)
-
-yTr <- to_categorical(training$variety, num_classes = 7)
-yTest <- to_categorical(testing$variety, num_classes = 7)
+training$variety <- training$variety-1
+testing$variety <- testing$variety-1
+yTr <- to_categorical(training$variety, num_classes = 3)
+yTest <- to_categorical(testing$variety, num_classes = 3)
 
 ```
 
