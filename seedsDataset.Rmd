@@ -31,7 +31,7 @@ head(seedsdf["area"])
 
 
 
-
+# Normalize data between 1 and 2
  for (i in 1:7) {
   min <- min(seedsdf[,i])
   max <- max(seedsdf[,i])
@@ -45,7 +45,6 @@ head(seedsdf["area"])
 If multiple distributions are visible, a particular distribution may be associated with a category. 
 ```{r}
 for (i in 1:7) {
-  plot(density(seedsdf[,i]))
   plot(density(seedsdfProcessed[,i]))
 }
 
@@ -118,7 +117,7 @@ xTest <- as.matrix(testing[,training.subset])
 
 model %>% 
   fit(
-    x = xTr, # input is the first 7 columns of the dataframe
+    x = xTr, # input is the training subsets
     y = yTr, # label is the last column
     epochs = model.epochs
   )
@@ -127,7 +126,7 @@ model %>%
 
 # Evaluate the model
 ```{r}
-score = model %>% evaluate(xTest, yTest, verbose = 1)
+score = model %>% evaluate(xTest, yTest, verbose = 0)
 
 
 # Predicting likelihood of all categories:
@@ -139,7 +138,7 @@ testing[,8]
 
 # Print table
 variable.content <- c(sample_size, layer.units, model.loss, model.optimizer, model.accuracy, model.epochs, input.shape, toString(training.subset), round(score[1], 4), round(score[2], 4))
-data= matrix(variable.content, ncol=10, byrow=TRUE)
+data = matrix(variable.content, ncol=10, byrow=TRUE)
 
 # Add column names
 colnames(data) = c('Sample Size','Layer Units','Loss','Optimizer', 'Accuracy', 'Epochs', 'Input Shape', 'Feature Selection', 'Test Loss', 'Test Accuracy')
@@ -149,4 +148,5 @@ table=as.table(data)
 # display
 table
 
+write.table(data,file="testData.csv", sep = ",", append = T, row.names=F, col.names=F, quote = FALSE)
 ```
