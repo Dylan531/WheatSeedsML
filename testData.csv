@@ -1,3 +1,2 @@
 Sample Size,Layer Units,Model Loss,Optimizer,Accuracy,Epochs,Input Shape,Feature Selection,Test Loss,Test Accuracy
-150,128,categorical_crossentropy,adam,accuracy,75,3,area, asymmetry.cof, compactness,0.3504,0.9
-150,128,categorical_crossentropy,adam,accuracy,75,3,area, asymmetry.cof, compactness,0.3504,0.9
+"150","128","categorical_crossentropy","adam","accuracy","75","3","area, asymmetry.cof, compactness","0.3504","0.9"
