@@ -11,10 +11,11 @@ output: html_document
 ```{r}
 library(keras)
 library(tfdatasets)
-
+library(caret)
 
 #Loading a csv file
 seedsdf <- read.csv("seeds_dataset.csv")
+seedsdfProcessed <- read.csv("seeds_dataset.csv")
 
 # Various syntax for R dataframes
 summary(seedsdf)
@@ -27,12 +28,25 @@ head(seedsdf[1]) # head takes the first few elements
 head(seedsdf$area)
 
 head(seedsdf["area"])
+
+
+
+
+ for (i in 1:7) {
+  min <- min(seedsdf[,i])
+  max <- max(seedsdf[,i])
+  for (j in 1:length(seedsdf[,i])) { 
+    seedsdfProcessed[j,i] <- ((seedsdf[j,i]-min)/(max-min))+1
+    print(seedsdfProcessed[j,i])
+  }
+}
 ```
 ## Explore the distributions of feature values using kernel density plots
 If multiple distributions are visible, a particular distribution may be associated with a category. 
 ```{r}
 for (i in 1:7) {
   plot(density(seedsdf[,i]))
+  plot(density(seedsdfProcessed[,i]))
 }
 
 ```
@@ -62,9 +76,17 @@ cor(seedsdf)
 
 ```{r}
 sample_size <- 150
+layer.units <- 128
+model.loss <- "categorical_crossentropy"
+model.optimizer <- "adam"
+model.accuracy <- "accuracy"
+model.epochs <- 50
+input.shape <- 3
+training.subset <- c("area","asymmetry.cof","compactness")
 set.seed(1234) # setting random seed to make results repeatable
+tf.random.set_seed(1234)
 
-picked <- sample(seq_len(nrow(seedsdf)),size = sample_size)
+picked <- sample(seq_len(nrow(seedsdfProcessed)),size = sample_size)
 training <- seedsdf[picked,]
 testing <- seedsdf[-picked,]
 
@@ -79,27 +101,26 @@ yTest <- to_categorical(testing$variety, num_classes = 7)
 ## Neural network for the iris example
 
 ```{r}
-
 model = keras_model_sequential() %>%
-  layer_dense(units = 128, activation = "relu",input_shape=(7)) %>%
-  layer_dense(units = 128, activation = "relu") %>%
+  layer_dense(units = layer.units, activation = "relu",input_shape=input.shape) %>%
+  layer_dense(units = layer.units, activation = "relu") %>%
   layer_dense(units = ncol(yTr), activation = "softmax")
 
 
 model %>% compile(
-  loss = "categorical_crossentropy",
-  optimizer = "adam", #optimizer_rmsprop(),
-  metrics = "accuracy"
+  loss = model.loss,
+  optimizer = model.optimizer, #optimizer_rmsprop(),
+  metrics = model.accuracy
 )
 
-xTr <- as.matrix(training[,1:7]) # need to convert to a matrix
-xTest <- as.matrix(testing[,1:7])
+xTr <- as.matrix(training[,training.subset]) # need to convert to a matrix
+xTest <- as.matrix(testing[,training.subset])
 
 model %>% 
   fit(
     x = xTr, # input is the first 7 columns of the dataframe
     y = yTr, # label is the last column
-    epochs = 50
+    epochs = model.epochs
   )
 
 ```
