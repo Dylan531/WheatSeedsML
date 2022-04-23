@@ -50,3 +50,9 @@ being represented disproportionally.
 
 ![Area Distribution](illustrations/area.png?raw=true)
 ![Asymmetry Distribution](illustrations/asymmetry.png?raw=true)
+
+## Experiment Table Example
+
+| Sample Size | Layer Units | Model Loss               | Optimizer | Accuracy | Epochs | Input Shape | Feature Selection            | Test Loss | Test Accuracy |
+| ----------- | ----------- | ------------------------ | --------- | -------- | ------ | ----------- | ---------------------------- | --------- | ------------- |
+| 150         | 128         | categorical_crossentropy | adam      | accuracy | 75     | 3           | Area, Asymmetry, Compactness | 0.4799    | 0.8           |
