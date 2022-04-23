@@ -133,7 +133,7 @@ table
 
 # Append run info to testData.csv
 write.table(data,
-  file = "testData.csv", sep = ",", append = T,
+  file = "experiment_history.csv", sep = ",", append = T,
   row.names = F, col.names = F
 )
 ```
