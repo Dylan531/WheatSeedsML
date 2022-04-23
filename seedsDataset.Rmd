@@ -1,5 +1,5 @@
 ---
-title: "seedsDataset"
+title: "Wheat Grain Dataset"
 author: "Dylan, Michael, and  Johannes"
 date: "4/18/2022"
 output: html_document
@@ -67,8 +67,8 @@ testing <- seedsdf[-picked, ]
 # Changing y into categorical data (performing one-hot encoding)
 training$variety <- training$variety - 1
 testing$variety <- testing$variety - 1
-y_Tr <- to_categorical(training$variety, num_classes = 3)
-y_Test <- to_categorical(testing$variety, num_classes = 3)
+y_tr <- to_categorical(training$variety, num_classes = 3)
+y_test <- to_categorical(testing$variety, num_classes = 3)
 ```
 
 ## Neural Network
@@ -79,7 +79,7 @@ model <- keras_model_sequential() %>%
     input_shape = input_shape
   ) %>%
   layer_dense(units = layer_units, activation = "relu") %>%
-  layer_dense(units = ncol(y_Tr), activation = "softmax")
+  layer_dense(units = ncol(y_tr), activation = "softmax")
 
 
 model %>% compile(
@@ -94,14 +94,14 @@ x_test <- as.matrix(testing[, training_subset])
 model %>%
   fit(
     x = x_tr, # input is the training subsets
-    y = y_Tr, # label is the last column
+    y = y_tr, # label is the last column
     epochs = model_epochs
   )
 ```
 
 # Evaluate the model
 ```{r}
-score <- model %>% evaluate(x_test, y_Test, verbose = 0)
+score <- model %>% evaluate(x_test, y_test, verbose = 0)
 
 
 # Predicting likelihood of all categories:
