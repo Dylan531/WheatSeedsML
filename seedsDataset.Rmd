@@ -56,7 +56,7 @@ model_optimizer <- "adam"
 model_accuracy <- "accuracy"
 model_epochs <- 75
 input_shape <- 3
-training_subset <- c("area", "asymmetry.cof", "compactness")
+training_subset <- c("Area", "Asymmetry", "Compactness")
 set.seed(1234) # setting random seed to make results repeatable
 
 picked <- sample(seq_len(nrow(processed_seedsdf)), size = sample_size)
@@ -65,10 +65,10 @@ testing <- seedsdf[-picked, ]
 
 
 # Changing y into categorical data (performing one-hot encoding)
-training$variety <- training$variety - 1
-testing$variety <- testing$variety - 1
-y_tr <- to_categorical(training$variety, num_classes = 3)
-y_test <- to_categorical(testing$variety, num_classes = 3)
+training$Variety <- training$Variety - 1
+testing$Variety <- testing$Variety - 1
+y_tr <- to_categorical(training$Variety, num_classes = 3)
+y_test <- to_categorical(testing$Variety, num_classes = 3)
 ```
 
 ## Neural Network
