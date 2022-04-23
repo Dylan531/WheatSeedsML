@@ -111,7 +111,7 @@ score <- model %>% evaluate(x_test, y_test, verbose = 0)
 
 # testing[, 8]
 
-# Print table
+# Table Data
 variable_content <- c(
   sample_size, layer_units, model_loss, model_optimizer,
   model_accuracy, model_epochs, input_shape, toString(training_subset),
@@ -119,7 +119,7 @@ variable_content <- c(
 )
 data <- matrix(variable_content, ncol = 10, byrow = TRUE)
 
-# Add column names
+#  Table labels
 colnames(data) <- c(
   "Sample Size", "Layer Units", "Loss", "Optimizer",
   "Accuracy", "Epochs", "Input Shape", "Feature Selection",
@@ -128,9 +128,10 @@ colnames(data) <- c(
 rownames(data) <- c("")
 table <- as.table(data)
 
-# display
+# Display table
 table
 
+# Append run info to testData.csv
 write.table(data,
   file = "testData.csv", sep = ",", append = T,
   row.names = F, col.names = F
