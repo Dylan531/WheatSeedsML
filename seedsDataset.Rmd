@@ -1,6 +1,6 @@
 ---
 title: "seedsDataset"
-author: "Dylan & Johannes"
+author: "Dylan, Michael, and  Johannes"
 date: "4/18/2022"
 output: html_document
 ---
