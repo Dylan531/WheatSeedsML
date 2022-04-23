@@ -28,3 +28,25 @@ The kernels belong to the Kama, Rosa, and Canadian varieties, labeled in the
 dataset as categories 1, 2, and 3.
 
 ## Preliminary Processing
+
+The numerical range of different features varies significantly. We noted, for
+instance, that while the area varies between 10.59 and 21.18 units, the
+compactness coefficient varies between just 0.8081 and 0.9183 units.
+
+|     | Area  | Perimeter | Compactness | Length | Width | Asymmetry | Groove Length |
+| --- | ----- | --------- | ----------- | ------ | ----- | --------- | ------------- |
+| Min | 10.59 | 12.41     | 0.8081      | 4.899  | 2.630 | 0.7651    | 4.519         |
+| Max | 21.18 | 17.25     | 0.9183      | 6.675  | 4.033 | 8.4560    | 6.550         |
+
+In our first attempt with preprocessing, we scaled the range of each feature to
+be between the numbers 1 and 2. This prevents features with larger ranges from
+being represented disproportionally.
+
+## Feature Selection: First Round
+
+### Correlations
+
+### Distributions
+
+![Area Distribution](illustrations/area.png?raw=true)
+![Asymmetry Distribution](illustrations/asymmetry.png?raw=true)
