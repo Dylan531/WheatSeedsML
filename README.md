@@ -76,13 +76,13 @@ category).
 ### Distributions
 
 <p align="middle">
-    <img src="illustrations/area.png?raw=true)" width="300"/> 
-    <img src="illustrations/asymmetry.png?raw=true)" width="300"/>
-    <img src="illustrations/compactness.png?raw=true)" width="300"/> 
-    <img src="illustrations/groove_length.png?raw=true)" width="300"/>
-    <img src="illustrations/length.png?raw=true)" width="300"/> 
-    <img src="illustrations/perimeter.png?raw=true)" width="300"/>
-    <img src="illustrations/width.png?raw=true)" width="300"/> 
+    <img src="illustrations/area.png?raw=true)" width="350"/> 
+    <img src="illustrations/asymmetry.png?raw=true)" width="350"/>
+    <img src="illustrations/compactness.png?raw=true)" width="350"/> 
+    <img src="illustrations/groove_length.png?raw=true)" width="350"/>
+    <img src="illustrations/length.png?raw=true)" width="350"/> 
+    <img src="illustrations/perimeter.png?raw=true)" width="350"/>
+    <img src="illustrations/width.png?raw=true)" width="350"/> 
 </p>
 
 ## Experiment Table Example
