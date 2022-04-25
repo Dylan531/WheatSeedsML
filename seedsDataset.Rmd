@@ -9,7 +9,6 @@ output: html_document
 
 ## dataframes 
 ```{r}
-set.seed(1234)
 library(keras)
 library(tfdatasets)
 
@@ -54,32 +53,36 @@ layer_units <- 128
 model_loss <- "categorical_crossentropy"
 model_optimizer <- "adam"
 model_accuracy <- "accuracy"
-model_epochs <- 120
-input_shape <- 3
-training_subset <- c("Area", "Asymmetry", "Compactness")
-set.seed(1234) # setting random seed to make results repeatable
-
-picked <- sample(seq_len(nrow(processed_seedsdf)), size = sample_size)
-training <- seedsdf[picked, ]
-testing <- seedsdf[-picked, ]
-
-
-# Changing y into categorical data (performing one-hot encoding)
-training$Variety <- training$Variety - 1
-testing$Variety <- testing$Variety - 1
-y_tr <- to_categorical(training$Variety, num_classes = 3)
-y_test <- to_categorical(testing$Variety, num_classes = 3)
+model_epochs <- 75
+input_shape <- 7
+training_subset <- 1:7
 ```
 
 ## Neural Network
-```{r}
+```{r,include=FALSE}
 averageLoss = c()
 averageAccuracy = c()
 
 for (i in 1:5) {
+  
+  set.seed(i) # setting random seed to make results repeatable and fair between models
+  
+  picked <- sample(seq_len(nrow(processed_seedsdf)), size = sample_size)
+  training <- seedsdf[picked, ]
+  testing <- seedsdf[-picked, ]
+  
+  
+  # Changing y into categorical data (performing one-hot encoding)
+  training$Variety <- training$Variety - 1
+  testing$Variety <- testing$Variety - 1
+  y_tr <- to_categorical(training$Variety, num_classes = 3)
+  y_test <- to_categorical(testing$Variety, num_classes = 3)
+  
+  
+  
   model <- keras_model_sequential() %>%
     layer_dense(units = layer_units, activation = "relu", input_shape = input_shape) %>%
-    layer_dense(units = layer_units, activation = "relu") %>%
+    layer_dense(units = layer_units, activation = "relu", kernel_regularizer = regularizer_l1_l2(l1 = 0.01, l2 = 0.01)) %>%
     layer_dense(units = ncol(y_tr), activation = "softmax")
   
   
@@ -110,8 +113,7 @@ for (i in 1:5) {
 
 # Evaluate the model
 ```{r}
-score <- model %>% evaluate(x_test, y_test, verbose = 0)
-
+testComment <- "Randomnized data selection between each run"
 
 # Predicting likelihood of all categories:
 # result <- model %>% predict(x_test)
@@ -124,15 +126,15 @@ score <- model %>% evaluate(x_test, y_test, verbose = 0)
 variable_content <- c(
   sample_size, layer_units, model_loss, model_optimizer,
   model_accuracy, model_epochs, input_shape, toString(training_subset),
-  median(averageLoss), median(averageAccuracy)
+  median(averageLoss), median(averageAccuracy), testComment
 )
-data <- matrix(variable_content, ncol = 10, byrow = TRUE)
+data <- matrix(variable_content, ncol = 11, byrow = TRUE)
 
 #  Table labels
 colnames(data) <- c(
   "Sample Size", "Layer Units", "Loss", "Optimizer",
   "Accuracy", "Epochs", "Input Shape", "Feature Selection",
-  "Test Loss", "Test Accuracy"
+  "Test Loss", "Test Accuracy", "Comment"
 )
 rownames(data) <- c("")
 table <- as.table(data)
