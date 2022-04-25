@@ -46,6 +46,23 @@ being represented disproportionally.
 
 ### Correlations
 
+We use the following Pearson correlation matrix to aid with feature selection.
+Among highly correlated features, we are interested in selecting features whose
+kernel density plots (seen below) most clearly suggest multiple distributions
+exist (the hope being that each of these distributions is associated with a
+category).
+
+|               | Area   | Perimeter | Compactness | Length | Width  | Asymmetry | Groove Length | Variety |
+| ------------- | ------ | --------- | ----------- | ------ | ------ | --------- | ------------- | ------- |
+| Area          | 1      | 0.994     | 0.608       | 0.95   | 0.971  | -0.23     | 0.864         | -0.346  |
+| Perimeter     | 0.994  | 1         | 0.529       | 0.972  | 0.945  | -0.217    | 0.891         | -0.328  |
+| Compactness   | 0.608  | 0.529     | 1           | 0.368  | 0.762  | -0.331    | 0.227         | -0.531  |
+| Length        | 0.95   | 0.972     | 0.368       | 1      | 0.86   | -0.172    | 0.933         | -0.257  |
+| Width         | 0.971  | 0.945     | 0.762       | 0.86   | 1      | -0.258    | 0.749         | -0.423  |
+| Asymmetry     | -0.23  | -0.217    | -0.331      | -0.172 | -0.258 | 1         | -0.011        | 0.577   |
+| Groove Length | 0.864  | 0.891     | 0.227       | 0.933  | 0.749  | -0.011    | 1             | 0.024   |
+| Variety       | -0.346 | -0.328    | -0.531      | -0.257 | -0.423 | 0.577     | 0.024         | 1       |
+
 ### Distributions
 
 ![Area Distribution](illustrations/area.png?raw=true)
