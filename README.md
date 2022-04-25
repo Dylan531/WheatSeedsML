@@ -51,6 +51,16 @@ being represented disproportionally.
 ![Area Distribution](illustrations/area.png?raw=true)
 ![Asymmetry Distribution](illustrations/asymmetry.png?raw=true)
 
+## Training and accuracy measures
+
+We use a randomly selected 80/20 training/testing split. Thus 168 entries are
+used for training. Given the relatively small size of the training set, we run
+the training 5 times on different training/testing selections, and take the
+median loss and accuracy scores across runs. We found this step necessary as
+the loss and accuracy scores varied by more than 5% at times, making accessing
+both the absolute and relative performance of different training parameters
+difficult.
+
 ## Experiment Table Example
 
 | Sample Size | Layer Units | Model Loss               | Optimizer | Accuracy | Epochs | Input Shape | Feature Selection            | Test Loss | Test Accuracy |
