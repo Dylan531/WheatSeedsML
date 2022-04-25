@@ -44,6 +44,10 @@ We should select one feature among each group of highly correlated features (>0.
 # The all.obs option assumes our data frame has no missing values. Uses Pearson
 # correlation testing by default.
 cor(seedsdf)
+write.table(cor(seedsdf),
+  file = "feature_correlations.csv", sep = ",", append = F,
+  row.names = T, col.names = T
+)
 ```
 
 ## Splitting data into training and testing
