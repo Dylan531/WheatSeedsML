@@ -6,7 +6,6 @@ output: html_document
 ---
 
 
-
 ## dataframes 
 ```{r}
 library(keras)
@@ -49,31 +48,26 @@ write.table(round(cor(seedsdf), 3),
 )
 ```
 
-## Splitting data into training and testing
-```{r}
-sample_size <- 168
+ 
+## Train and test repeatedly
+```{r,include=FALSE}
+averageLoss = c()
+averageAccuracy = c()
+sample_size <- 150
 layer_units <- 128
 model_loss <- "categorical_crossentropy"
 model_optimizer <- "adam"
 model_accuracy <- "accuracy"
 model_epochs <- 75
-input_shape <- 7
-training_subset <- 1:7
-```
-
-## Neural Network
-```{r,include=FALSE}
-averageLoss = c()
-averageAccuracy = c()
+input_shape <- 3
+training_subset <- c("Area", "Asymmetry", "Compactness")
 
 for (i in 1:5) {
-  
   set.seed(i) # setting random seed to make results repeatable and fair between models
   
   picked <- sample(seq_len(nrow(processed_seedsdf)), size = sample_size)
   training <- seedsdf[picked, ]
   testing <- seedsdf[-picked, ]
-  
   
   # Changing y into categorical data (performing one-hot encoding)
   training$Variety <- training$Variety - 1
@@ -81,13 +75,13 @@ for (i in 1:5) {
   y_tr <- to_categorical(training$Variety, num_classes = 3)
   y_test <- to_categorical(testing$Variety, num_classes = 3)
   
-  
-  
+  ## Neural Network
   model <- keras_model_sequential() %>%
-    layer_dense(units = layer_units, activation = "relu", input_shape = input_shape) %>%
-    layer_dense(units = layer_units, activation = "relu", kernel_regularizer = regularizer_l1_l2(l1 = 0.01, l2 = 0.01)) %>%
+    layer_dense(
+      units = layer_units, activation = "relu",
+      input_shape = input_shape ) %>%
+    layer_dense(units = layer_units, activation = "relu") %>%
     layer_dense(units = ncol(y_tr), activation = "softmax")
-  
   
   model %>% compile(
     loss = model_loss,
@@ -104,7 +98,8 @@ for (i in 1:5) {
       y = y_tr, # label is the last column
       epochs = model_epochs
     )
-  
+
+  # Test neural network
   score <- model %>% evaluate(x_test, y_test, verbose = 0)
 
   averageLoss[i] <- round(score[1], 4)
