@@ -43,8 +43,7 @@ We should select one feature among each group of highly correlated features (>0.
 # Use the R correlation function cor()
 # The all.obs option assumes our data frame has no missing values. Uses Pearson
 # correlation testing by default.
-cor(seedsdf)
-write.table(cor(seedsdf),
+write.table(round(cor(seedsdf), 3),
   file = "feature_correlations.csv", sep = ",", append = F,
   row.names = T, col.names = T
 )
