@@ -58,7 +58,7 @@ model_optimizer <- "adam"
 model_accuracy <- "accuracy"
 model_epochs <- 120
 select_df <- scaled_df[, c("Area", "Compactness", "Groove.Length", "Variety")]
-test_comment <- "test comment"
+test_comment <- "Three hidden layers"
 
 for(i in 1:5) {
   set.seed(i) # setting random seed to make results repeatable and fair between models
@@ -77,6 +77,7 @@ for(i in 1:5) {
   ## Neural Network
   model <- keras_model_sequential() %>%
     layer_dense(units = layer_units, activation = "relu", input_shape = (shape) ) %>%
+    layer_dense(units = layer_units, activation = "relu") %>%
     layer_dense(units = layer_units, activation = "relu") %>%
     layer_dense(units = layer_units, activation = "relu") %>%
     layer_dense(units = ncol(y_tr), activation = "softmax")
@@ -107,7 +108,7 @@ for(i in 1:5) {
 
 ```
 
-# Evaluate the model
+# Evaluate the model and record data
 ```{r}
 testComment <- "Randomnized data selection between each run"
 
@@ -143,4 +144,7 @@ write.table(data,
   file = "experiment_history.csv", sep = ",", append = T,
   row.names = F, col.names = F
 )
+
+# Clear global memory space
+rm(list = ls())
 ```
