@@ -51,16 +51,16 @@ write.table(round(cor(seedsdf), 3),
 ```{r, include=FALSE} 
 loss_vect = c()
 accuracy_vect = c()
-sample_size <- 160
-layer_units <- 128
+sample_size <- 150
+layer_units <- 64
 model_loss <- "categorical_crossentropy"
 model_optimizer <- "adam"
 model_accuracy <- "accuracy"
-model_epochs <- 120
-select_df <- scaled_df[, c("Area", "Compactness", "Groove.Length", "Variety")]
-test_comment <- "Three hidden layers"
+model_epochs <- 500
+select_df <- scaled_df[, c("Length", "Compactness", "Groove.Length", "Variety")]
+test_comment <- "Five hidd layers, reg. last hidd lay"
 
-for(i in 1:5) {
+for(i in 1:7) {
   set.seed(i) # setting random seed to make results repeatable and fair between models
   
   picked <- sample(seq_len(nrow(select_df)), size = sample_size)
@@ -80,11 +80,13 @@ for(i in 1:5) {
     layer_dense(units = layer_units, activation = "relu") %>%
     layer_dense(units = layer_units, activation = "relu") %>%
     layer_dense(units = layer_units, activation = "relu") %>%
+    layer_dense(units = layer_units, activation = "relu") %>%
+    layer_dense(units = layer_units, activation = "relu", kernel_regularizer = regularizer_l1_l2(l1 = 0.01, l2 = 0.01)) %>%
     layer_dense(units = ncol(y_tr), activation = "softmax")
   
   model %>% compile(
     loss = model_loss,
-    optimizer = model_optimizer, # optimizer_rmsprop(),
+    optimizer = model_optimizer,
     metrics = model_accuracy
   )
   
@@ -105,19 +107,13 @@ for(i in 1:5) {
   accuracy_vect[i] <- round(score[2], 4)
 }
 
+accuracy_vect
+loss_vect
 
 ```
 
-# Evaluate the model and record data
+# Record Data
 ```{r}
-testComment <- "Randomnized data selection between each run"
-
-# Predicting likelihood of all categories:
-# result <- model %>% predict(x_test)
-
-# result
-
-# testing[, 8]
 
 # Table Data
 variable_content <- c(

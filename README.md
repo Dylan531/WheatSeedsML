@@ -62,7 +62,7 @@ kernel density plots (seen below) most clearly suggest multiple distributions
 exist (the hope being that each of these distributions is associated with a
 category).
 
-|               | Area   | Perimeter | Compact. | Length | Width  | Asymmetry | Groove Length | Variety |
+|               | Area   | Perimeter | Compact. | Length | Width  | Asymmetry | Groove L | Variety |
 | ------------- | ------ | --------- | ----------- | ------ | ------ | --------- | ------------- | ------- |
 | Area          | 1      | 0.994     | 0.608       | 0.95   | 0.971  | -0.23     | 0.864         | -0.346  |
 | Perimeter     | 0.994  | 1         | 0.529       | 0.972  | 0.945  | -0.217    | 0.891         | -0.328  |
@@ -70,7 +70,7 @@ category).
 | Length        | 0.95   | 0.972     | 0.368       | 1      | 0.86   | -0.172    | 0.933         | -0.257  |
 | Width         | 0.971  | 0.945     | 0.762       | 0.86   | 1      | -0.258    | 0.749         | -0.423  |
 | Asymmetry     | -0.23  | -0.217    | -0.331      | -0.172 | -0.258 | 1         | -0.011        | 0.577   |
-| Groove Length | 0.864  | 0.891     | 0.227       | 0.933  | 0.749  | -0.011    | 1             | 0.024   |
+| Groove L | 0.864  | 0.891     | 0.227       | 0.933  | 0.749  | -0.011    | 1             | 0.024   |
 | Variety       | -0.346 | -0.328    | -0.531      | -0.257 | -0.423 | 0.577     | 0.024         | 1       |
 
 ### Distributions
@@ -87,20 +87,22 @@ category).
 
 ## Experiment Table Example
 
-| Train Size | Nodes| M Loss               | Opt. | M Accu. | Epochs | Input Shape | Feature Select.             | Test Loss | Test Accu. | Comment                  |
+| Train Size | Nodes/ Layer| M Loss               | Opt. | M Accu. | Epoch | Input Shape | Feature Select.             | Test Loss | Test Accu. | Comment                  |
 | ----------- | ----------- | ------------------------ | --------- | -------- | ------ | ----------- | ------------------------------ | --------- | ------------- | ------------------------- |
-| 150         | 128         | cat. c. entrp            | adam      | accu. | 75     | 3           | Area, Asymmetry, Compact.      | 0.4799    | 0.8           | None                |
-| 168         | 128         | cat. c. entrp            | adam      | accu. | 75     | 3           | Area, Asymmetry, Compact.      | 0.4079    | 0.8571        | None                |
-| 168         | 128         | cat. c. entrp            | adam      | accu. | 75     | 3           | Area, Asymmetry, Compact.      | 0.4079    | 0.8571        | None                |
-| 168         | 128         | cat. c. entrp            | adam      | accu. | 75     | 3           | Area, Asymmetry, Compact.      | 0.33285   | 0.881         | None                |
-| 150         | 128         | cat. c. entrp            | adam      | accu. | 75     | 3           | Area, Asymmetry, Compact.      | 0.3912    | 0.85          | None                |
-| 168         | 128         | cat. c. entrp            | adam      | accu. | 75     | 3           | Area, Asymmetry, Compact.      | 0.3365    | 0.8571        | None                |
-| 168         | 128         | cat. c. entrp            | adam      | accu. | 100    | 3           | Area, Asymmetry, Compact.      | 0.2825    | 0.881         | None                |
-| 168         | 128         | cat. c. entrp            | adam      | accu. | 120    | 3           | Area, Asymmetry, Compact.      | 0.7572    | 0.8571        | None                |
+| 150         | 128         | cat. c. entrp            | adam      | accu. | 75     | 3           | Area, Asymm., Compact.      | 0.4799    | 0.8           | None                |
+| 168         | 128         | cat. c. entrp            | adam      | accu. | 75     | 3           | Area, Asymm., Compact.      | 0.4079    | 0.8571        | None                |
+| 168         | 128         | cat. c. entrp            | adam      | accu. | 75     | 3           | Area, Asymm., Compact.      | 0.4079    | 0.8571        | None                |
+| 168         | 128         | cat. c. entrp            | adam      | accu. | 75     | 3           | Area, Asymm., Compact.      | 0.33285   | 0.881         | None                |
+| 150         | 128         | cat. c. entrp            | adam      | accu. | 75     | 3           | Area, Asymm., Compact.      | 0.3912    | 0.85          | None                |
+| 168         | 128         | cat. c. entrp            | adam      | accu. | 75     | 3           | Area, Asymm., Compact.      | 0.3365    | 0.8571        | None                |
+| 168         | 128         | cat. c. entrp            | adam      | accu. | 100    | 3           | Area, Asymm., Compact.      | 0.2825    | 0.881         | None                |
+| 168         | 128         | cat. c. entrp            | adam      | accu. | 120    | 3           | Area, Asymm., Compact.      | 0.7572    | 0.8571        | None                |
 | 168         | 128         | cat. c. entrp            | adam      | accu. | 75     | 7           | 1, 2, 3, 4, 5, 6, 7            | 0.9916    | 0.881         | Regular. on layer 2 |
 | 168         | 128         | cat. c. entrp            | adam      | accu. | 75     | 7           | 1, 2, 3, 4, 5, 6, 7            | 1.0488    | 0.881         | Const. to 10    |
 | 168         | 128         | cat. c. entrp            | adam      | accu. | 75     | 7           | 1, 2, 3, 4, 5, 6, 7            | 1.0457    | 0.881         | Rand. data sel      |
-| 160         | 128         | cat. c. entrp | adam      | accu. | 120    | 3           | Width, Compact., Groove Length | 0.2719    | 0.92          | One hidden layer          |
-| 160         | 128         | cat. c. entrp | adam      | accu. | 68     | 3           | Width, Compact., Groove Length | 0.2657    | 0.94          | Two hidden layers         |
-| 160 | 128 | cat. c. entrp | adam | accu. | 120 | 3   | Area, Compact., Groove Length | 0.1607 | 0.94 | Two hidden layers |
-| 160 | 128 | cat. c. entrp | adam | accu. | 120 | 3   | Area, Compact., Groove Length | 0.143 | 0.94 | Three hidden layers |
+| 160         | 128         | cat. c. entrp | adam      | accu. | 120    | 3           | Width, Compact., Groove L | 0.2719    | 0.92          | One hidd. layer          |
+| 160         | 128         | cat. c. entrp | adam      | accu. | 68     | 3           | Width, Compact., Groove L | 0.2657    | 0.94          | Two hidd. layers         |
+| 160 | 128 | cat. c. entrp | adam | accu. | 120 | 3   | Area, Compact., Groove L | 0.1607 | 0.94 | Two hidd. layers |
+| 160 | 128 | cat. c. entrp | adam | accu. | 120 | 3   | Area, Compact., Groove L | 0.143 | 0.94 | Three hidd. layers |
+| 160 | 128 | cat. c. entrp | adam | accu. | 120 | 4   | Area, Compact., Groove L, Perim. | 0.1534 | 0.96 | Sigmoid act. last hidd. layer |
+| 150 | 64  | cat. c. entrp | adam | accu.| 500 | 3   | Length, Compact., Groove L | 0.1757 | 0.9667 | Five hidd. layers, reg. last hidd lay |
