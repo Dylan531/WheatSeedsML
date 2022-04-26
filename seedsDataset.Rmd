@@ -5,7 +5,6 @@ date: "4/18/2022"
 output: html_document
 ---
 
-
 ## dataframes 
 ```{r}
 library(keras)
@@ -13,7 +12,7 @@ library(tfdatasets)
 
 # Loading a csv file
 seedsdf <- read.csv("seeds_dataset.csv")
-processed_seedsdf <- read.csv("seeds_dataset.csv")
+scaled_df <- read.csv("seeds_dataset.csv")
 
 # Various syntax for R dataframes
 summary(seedsdf)
@@ -23,7 +22,7 @@ for (i in 1:7) {
   min <- min(seedsdf[, i])
   max <- max(seedsdf[, i])
   for (j in 1:length(seedsdf[, i])) {
-    processed_seedsdf[j, i] <- ((seedsdf[j, i] - min) / (max - min)) + 1
+    scaled_df[j, i] <- ((seedsdf[j, i] - min) / (max - min)) + 1
   }
 }
 ```
@@ -32,7 +31,7 @@ for (i in 1:7) {
 If multiple distributions are visible, a particular distribution may be associated with a category. 
 ```{r}
 for (i in 1:7) {
-  plot(density(processed_seedsdf[, i]), names(processed_seedsdf)[i])
+  plot(density(scaled_df[, i]), names(scaled_df)[i])
 }
 ```
 
@@ -88,8 +87,8 @@ for(i in 1:5) {
     metrics = model_accuracy
   )
   
-  x_tr <- as.matrix(training[, training_subset]) # need to convert to a matrix
-  x_test <- as.matrix(testing[, training_subset])
+  x_tr <- as.matrix(training[, 1:(length(training) -1)]) # need to convert to a matrix
+  x_test <- as.matrix(testing[, 1:(length(training) -1)])
   
   model %>%
     fit(
@@ -97,12 +96,12 @@ for(i in 1:5) {
       y = y_tr, # label is the last column
       epochs = model_epochs
     )
-
+  
   # Test neural network
   score <- model %>% evaluate(x_test, y_test, verbose = 0)
 
-  averageLoss[i] <- round(score[1], 4)
-  averageAccuracy[i] <- round(score[2], 4)
+  loss_vect[i] <- round(score[1], 4)
+  accuracy_vect[i] <- round(score[2], 4)
 }
 
 
@@ -122,8 +121,8 @@ testComment <- "Randomnized data selection between each run"
 # Table Data
 variable_content <- c(
   sample_size, layer_units, model_loss, model_optimizer,
-  model_accuracy, model_epochs, input_shape, toString(training_subset),
-  median(averageLoss), median(averageAccuracy), testComment
+  model_accuracy, model_epochs, shape, toString(names(training[, 1:(length(training) -1)])),
+  median(loss_vect), median(accuracy_vect), test_comment
 )
 data <- matrix(variable_content, ncol = 11, byrow = TRUE)
 
@@ -133,7 +132,7 @@ colnames(data) <- c(
   "Accuracy", "Epochs", "Input Shape", "Feature Selection",
   "Test Loss", "Test Accuracy", "Comment"
 )
-rownames(data) <- c("")
+rownames(data) <- c(" ")
 table <- as.table(data)
 
 # Display table
