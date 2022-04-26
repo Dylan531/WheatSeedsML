@@ -48,38 +48,37 @@ write.table(round(cor(seedsdf), 3),
 )
 ```
 
- 
 ## Train and test repeatedly
-```{r,include=FALSE}
-averageLoss = c()
-averageAccuracy = c()
-sample_size <- 150
+```{r, include=FALSE} 
+loss_vect = c()
+accuracy_vect = c()
+sample_size <- 160
 layer_units <- 128
 model_loss <- "categorical_crossentropy"
 model_optimizer <- "adam"
 model_accuracy <- "accuracy"
-model_epochs <- 75
-input_shape <- 3
-training_subset <- c("Area", "Asymmetry", "Compactness")
+model_epochs <- 120
+select_df <- scaled_df[, c("Area", "Compactness", "Groove.Length", "Variety")]
+test_comment <- "test comment"
 
-for (i in 1:5) {
+for(i in 1:5) {
   set.seed(i) # setting random seed to make results repeatable and fair between models
   
-  picked <- sample(seq_len(nrow(processed_seedsdf)), size = sample_size)
-  training <- seedsdf[picked, ]
-  testing <- seedsdf[-picked, ]
+  picked <- sample(seq_len(nrow(select_df)), size = sample_size)
+  training <- select_df[picked, ]
+  testing <- select_df[-picked, ]
   
   # Changing y into categorical data (performing one-hot encoding)
-  training$Variety <- training$Variety - 1
+  training$Variety <- training$Variety - 1 # Standard is category count from 0
   testing$Variety <- testing$Variety - 1
+  shape <- length(training) - 1
   y_tr <- to_categorical(training$Variety, num_classes = 3)
   y_test <- to_categorical(testing$Variety, num_classes = 3)
   
   ## Neural Network
   model <- keras_model_sequential() %>%
-    layer_dense(
-      units = layer_units, activation = "relu",
-      input_shape = input_shape ) %>%
+    layer_dense(units = layer_units, activation = "relu", input_shape = (shape) ) %>%
+    layer_dense(units = layer_units, activation = "relu") %>%
     layer_dense(units = layer_units, activation = "relu") %>%
     layer_dense(units = ncol(y_tr), activation = "softmax")
   
