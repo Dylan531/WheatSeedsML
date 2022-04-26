@@ -87,7 +87,7 @@ category).
 
 ## Experiment Table Example
 
-| Sample Size | Layer Units | Model Loss               | Opt. | M Accu. | Epochs | Input Shape | Feature Select.             | Test Loss | Test Accu. | Comment                  |
+| Train Size | Nodes| M Loss               | Opt. | M Accu. | Epochs | Input Shape | Feature Select.             | Test Loss | Test Accu. | Comment                  |
 | ----------- | ----------- | ------------------------ | --------- | -------- | ------ | ----------- | ------------------------------ | --------- | ------------- | ------------------------- |
 | 150         | 128         | cat. c. entrp            | adam      | accu. | 75     | 3           | Area, Asymmetry, Compact.      | 0.4799    | 0.8           | None                |
 | 168         | 128         | cat. c. entrp            | adam      | accu. | 75     | 3           | Area, Asymmetry, Compact.      | 0.4079    | 0.8571        | None                |
