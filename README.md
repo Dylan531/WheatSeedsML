@@ -87,16 +87,16 @@ category).
 
 ## Experiment Table Example
 
-| Sample Size | Layer Units | Model Loss               | Optimizer | Accuracy | Epochs | Input Shape | Feature Selection              | Test Loss | Test Accuracy | Comment                   |
+| Sample Size | Layer Units | Model Loss               | Opt. | Accuracy | Epochs | Input Shape | Feature Selection              | Test Loss | Test Accuracy | Comment                  |
 | ----------- | ----------- | ------------------------ | --------- | -------- | ------ | ----------- | ------------------------------ | --------- | ------------- | ------------------------- |
-| 150         | 128         | cat. c. entrp            | adam      | accuracy | 75     | 3           | Area, Asymmetry, Compact.      | 0.4799    | 0.8           | No comment                |
-| 168         | 128         | cat. c. entrp            | adam      | accuracy | 75     | 3           | Area, Asymmetry, Compact.      | 0.4079    | 0.8571        | No comment                |
-| 168         | 128         | cat. c. entrp            | adam      | accuracy | 75     | 3           | Area, Asymmetry, Compact.      | 0.4079    | 0.8571        | No comment                |
-| 168         | 128         | cat. c. entrp            | adam      | accuracy | 75     | 3           | Area, Asymmetry, Compact.      | 0.33285   | 0.881         | No comment                |
-| 150         | 128         | cat. c. entrp            | adam      | accuracy | 75     | 3           | Area, Asymmetry, Compact.      | 0.3912    | 0.85          | No comment                |
-| 168         | 128         | cat. c. entrp            | adam      | accuracy | 75     | 3           | Area, Asymmetry, Compact.      | 0.3365    | 0.8571        | No comment                |
-| 168         | 128         | cat. c. entrp            | adam      | accuracy | 100    | 3           | Area, Asymmetry, Compact.      | 0.2825    | 0.881         | No comment                |
-| 168         | 128         | cat. c. entrp            | adam      | accuracy | 120    | 3           | Area, Asymmetry, Compact.      | 0.7572    | 0.8571        | No comment                |
+| 150         | 128         | cat. c. entrp            | adam      | accuracy | 75     | 3           | Area, Asymmetry, Compact.      | 0.4799    | 0.8           | None                |
+| 168         | 128         | cat. c. entrp            | adam      | accuracy | 75     | 3           | Area, Asymmetry, Compact.      | 0.4079    | 0.8571        | None                |
+| 168         | 128         | cat. c. entrp            | adam      | accuracy | 75     | 3           | Area, Asymmetry, Compact.      | 0.4079    | 0.8571        | None                |
+| 168         | 128         | cat. c. entrp            | adam      | accuracy | 75     | 3           | Area, Asymmetry, Compact.      | 0.33285   | 0.881         | None                |
+| 150         | 128         | cat. c. entrp            | adam      | accuracy | 75     | 3           | Area, Asymmetry, Compact.      | 0.3912    | 0.85          | None                |
+| 168         | 128         | cat. c. entrp            | adam      | accuracy | 75     | 3           | Area, Asymmetry, Compact.      | 0.3365    | 0.8571        | None                |
+| 168         | 128         | cat. c. entrp            | adam      | accuracy | 100    | 3           | Area, Asymmetry, Compact.      | 0.2825    | 0.881         | None                |
+| 168         | 128         | cat. c. entrp            | adam      | accuracy | 120    | 3           | Area, Asymmetry, Compact.      | 0.7572    | 0.8571        | None                |
 | 168         | 128         | cat. c. entrp            | adam      | accuracy | 75     | 7           | 1, 2, 3, 4, 5, 6, 7            | 0.9916    | 0.881         | Regularization on layer 2 |
 | 168         | 128         | cat. c. entrp            | adam      | accuracy | 75     | 7           | 1, 2, 3, 4, 5, 6, 7            | 1.0488    | 0.881         | Changed constant to 10    |
 | 168         | 128         | cat. c. entrp            | adam      | accuracy | 75     | 7           | 1, 2, 3, 4, 5, 6, 7            | 1.0457    | 0.881         | Randomnized data sel      |
