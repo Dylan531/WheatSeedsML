@@ -87,6 +87,25 @@ category).
 
 ## Experiment Table Example
 
+<<<<<<< Updated upstream
 | Sample Size | Layer Units | Model Loss               | Optimizer | Accuracy | Epochs | Input Shape | Feature Selection            | Test Loss | Test Accuracy |
 | ----------- | ----------- | ------------------------ | --------- | -------- | ------ | ----------- | ---------------------------- | --------- | ------------- |
 | 150         | 128         | categorical_crossentropy | adam      | accuracy | 75     | 3           | Area, Asymmetry, Compactness | 0.4799    | 0.8           |
+=======
+| Sample Size | Layer Units | Model Loss               | Optimizer | Accuracy | Epochs | Input Shape | Feature Selection              | Test Loss | Test Accuracy | Comment                   |
+| ----------- | ----------- | ------------------------ | --------- | -------- | ------ | ----------- | ------------------------------ | --------- | ------------- | ------------------------- |
+| 150         | 128         | cat. c. entrp            | adam      | accuracy | 75     | 3           | Area, Asymmetry, Compact.      | 0.4799    | 0.8           | No comment                |
+| 168         | 128         | cat. c. entrp            | adam      | accuracy | 75     | 3           | Area, Asymmetry, Compact.      | 0.4079    | 0.8571        | No comment                |
+| 168         | 128         | cat. c. entrp            | adam      | accuracy | 75     | 3           | Area, Asymmetry, Compact.      | 0.4079    | 0.8571        | No comment                |
+| 168         | 128         | cat. c. entrp            | adam      | accuracy | 75     | 3           | Area, Asymmetry, Compact.      | 0.33285   | 0.881         | No comment                |
+| 150         | 128         | cat. c. entrp            | adam      | accuracy | 75     | 3           | Area, Asymmetry, Compact.      | 0.3912    | 0.85          | No comment                |
+| 168         | 128         | cat. c. entrp            | adam      | accuracy | 75     | 3           | Area, Asymmetry, Compact.      | 0.3365    | 0.8571        | No comment                |
+| 168         | 128         | cat. c. entrp            | adam      | accuracy | 100    | 3           | Area, Asymmetry, Compact.      | 0.2825    | 0.881         | No comment                |
+| 168         | 128         | cat. c. entrp            | adam      | accuracy | 120    | 3           | Area, Asymmetry, Compact.      | 0.7572    | 0.8571        | No comment                |
+| 168         | 128         | cat. c. entrp            | adam      | accuracy | 75     | 7           | 1, 2, 3, 4, 5, 6, 7            | 0.9916    | 0.881         | Regularization on layer 2 |
+| 168         | 128         | cat. c. entrp            | adam      | accuracy | 75     | 7           | 1, 2, 3, 4, 5, 6, 7            | 1.0488    | 0.881         | Changed constant to 10    |
+| 168         | 128         | cat. c. entrp            | adam      | accuracy | 75     | 7           | 1, 2, 3, 4, 5, 6, 7            | 1.0457    | 0.881         | Randomnized data sel      |
+| 160         | 128         | cat. c. entrp | adam      | accuracy | 120    | 3           | Width, Compact., Groove.Length | 0.2719    | 0.92          | One hidden layer          |
+| 160         | 128         | cat. c. entrp | adam      | accuracy | 68     | 3           | Width, Compact., Groove.Length | 0.2657    | 0.94          | Two hidden layers         |
+| 160 | 128 | cat. c. entrp | adam | accuracy | 120 | 3   | Area, Compactness, Groove.Length | 0.1607 | 0.94 | Two hidden layers |
+>>>>>>> Stashed changes
