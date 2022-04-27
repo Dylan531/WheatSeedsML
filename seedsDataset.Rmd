@@ -60,9 +60,8 @@ model_epochs <- 500
 select_df <- scaled_df[, c("Length", "Compactness", "Groove.Length", "Variety")]
 test_comment <- "Five hidd layers, reg. last hidd lay"
 
+set.seed(i) # Setting random seed for training/testing data split
 for(i in 1:7) {
-  set.seed(i) # setting random seed to make results repeatable and fair between models
-  
   picked <- sample(seq_len(nrow(select_df)), size = sample_size)
   training <- select_df[picked, ]
   testing <- select_df[-picked, ]

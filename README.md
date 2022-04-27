@@ -11,7 +11,7 @@ Repository](https://archive.ics.uci.edu/ml/datasets/seeds).
 
 ## Dataset Description
 
-Using a soft X-ray technique, Charytanowicz et al. measured the following
+Using a soft X-ray technique, Charytanowicz et al. collected the following
 kernel features:
 
 - Area *A*
