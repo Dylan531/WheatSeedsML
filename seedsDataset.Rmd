@@ -128,7 +128,7 @@ variable_content <- c(
   model_accuracy, model_epochs, model_loops, shape, toString(names(training[, 1:(length(training) -1)])),
   median(loss_vect), median(accuracy_vect), test_comment # Record median of the loss and accuracy vectors
 )
-data <- matrix(variable_content, ncol = 11, byrow = TRUE)
+data <- matrix(variable_content, ncol = 12, byrow = TRUE)
 
 # Table labels
 colnames(data) <- c(
