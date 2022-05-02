@@ -1,16 +1,16 @@
 ---
 title: "Wheat Grain Dataset"
-author: "Dylan, Michael, and  Johannes"
+author: "Dylan, Michael, and Johannes"
 date: "4/18/2022"
 output: html_document
 ---
 
-## dataframes 
+## Import dataframes and normalize
 ```{r}
 library(keras)
 library(tfdatasets)
 
-# Loading a csv file
+# Loading our data from CSV, duplicate for nomalized version
 seedsdf <- read.csv("seeds_dataset.csv")
 scaled_df <- read.csv("seeds_dataset.csv")
 
@@ -19,19 +19,22 @@ summary(seedsdf)
 
 # Normalize data between 1 and 2
 for (i in 1:7) {
+  # Get the min and the max of the specific column
   min <- min(seedsdf[, i])
   max <- max(seedsdf[, i])
+  # Iterate through every element of that column to scale each value
   for (j in 1:length(seedsdf[, i])) {
+    # Min-Max Normalization: (X – min(X)) / (max(X) – min(X))
     scaled_df[j, i] <- ((seedsdf[j, i] - min) / (max - min)) + 1
   }
 }
 ```
 
-## Explore the distributions of feature values using kernel density plots
-If multiple distributions are visible, a particular distribution may be associated with a category. 
+## Explore the distributions of feature values using kernel density plots, verify scaling
 ```{r}
 for (i in 1:7) {
   plot(density(scaled_df[, i]), names(scaled_df)[i])
+  plot(density(seedsdf[, i]), names(seedsdf)[i])
 }
 ```
 
@@ -49,19 +52,23 @@ write.table(round(cor(seedsdf), 3),
 
 ## Train and test repeatedly
 ```{r, include=FALSE} 
+# Set all of our constants for recording at the end
 loss_vect = c()
 accuracy_vect = c()
 sample_size <- 150
-layer_units <- 64
+layer_units <- 32
 model_loss <- "categorical_crossentropy"
 model_optimizer <- "adam"
 model_accuracy <- "accuracy"
-model_epochs <- 500
-select_df <- scaled_df[, c("Length", "Compactness", "Groove.Length", "Variety")]
-test_comment <- "Five hidd layers, reg. last hidd lay"
+model_epochs <- 100
+model_loops <- 5
+select_df <- scaled_df[, c("Length", "Groove.Length", "Variety")]
+test_comment <- "Four hidd layers, one non-reg, learn rate 0.003, decay 0.00095"
 
-set.seed(i) # Setting random seed for training/testing data split
-for(i in 1:7) {
+set.seed(1234) # Setting random seed for training/testing data split
+
+# Run the model for the amount of loops specified so we can get a better idea of its true performance
+for(i in 1:model_loops) {
   picked <- sample(seq_len(nrow(select_df)), size = sample_size)
   training <- select_df[picked, ]
   testing <- select_df[-picked, ]
@@ -75,22 +82,19 @@ for(i in 1:7) {
   
   ## Neural Network
   model <- keras_model_sequential() %>%
-    layer_dense(units = layer_units, activation = "relu", input_shape = (shape) ) %>%
+    layer_dense(units = layer_units, activation = "relu", input_shape = shape) %>%
     layer_dense(units = layer_units, activation = "relu") %>%
-    layer_dense(units = layer_units, activation = "relu") %>%
-    layer_dense(units = layer_units, activation = "relu") %>%
-    layer_dense(units = layer_units, activation = "relu") %>%
-    layer_dense(units = layer_units, activation = "relu", kernel_regularizer = regularizer_l1_l2(l1 = 0.01, l2 = 0.01)) %>%
+    layer_dense(units = layer_units, activation = "relu", kernel_regularizer = regularizer_l1_l2(l1 = 0.0025, l2 = 0.0025)) %>%
     layer_dense(units = ncol(y_tr), activation = "softmax")
   
   model %>% compile(
     loss = model_loss,
-    optimizer = model_optimizer,
+    optimizer = optimizer_adam(learning_rate = 0.003, decay = 0.00095),
     metrics = model_accuracy
   )
   
   x_tr <- as.matrix(training[, 1:(length(training) -1)]) # need to convert to a matrix
-  x_test <- as.matrix(testing[, 1:(length(training) -1)])
+  x_test <- as.matrix(testing[, 1:(length(testing) -1)])
   
   model %>%
     fit(
@@ -102,6 +106,7 @@ for(i in 1:7) {
   # Test neural network
   score <- model %>% evaluate(x_test, y_test, verbose = 0)
 
+  # Record its accuracy and loss before we loop so we can take the median later
   loss_vect[i] <- round(score[1], 4)
   accuracy_vect[i] <- round(score[2], 4)
 }
@@ -116,16 +121,161 @@ loss_vect
 
 # Table Data
 variable_content <- c(
-  sample_size, layer_units, model_loss, model_optimizer,
-  model_accuracy, model_epochs, shape, toString(names(training[, 1:(length(training) -1)])),
-  median(loss_vect), median(accuracy_vect), test_comment
+  sample_size, layer_units, model_epochs, model_loops, shape, toString(names(training[, 1:(length(training) -1)])),
+  median(loss_vect), median(accuracy_vect), test_comment # Record median of the loss and accuracy vectors
 )
-data <- matrix(variable_content, ncol = 11, byrow = TRUE)
+data <- matrix(variable_content, ncol = 9, byrow = TRUE)
 
-#  Table labels
+# Table labels
 colnames(data) <- c(
-  "Sample Size", "Layer Units", "Loss", "Optimizer",
-  "Accuracy", "Epochs", "Input Shape", "Feature Selection",
+  "Sample Size", "Layer Units", "Epochs", "Loops", "Input Shape", "Feature Selection",
+  "Test Loss", "Test Accuracy", "Comment"
+)
+rownames(data) <- c(" ")
+table <- as.table(data)
+
+# Display table
+table
+
+# Append run info to testData.csv
+write.table(data,
+  file = "experiment_history.csv", sep = ",", append = T,
+  row.names = F, col.names = F
+)
+
+# Clear global memory space
+rm(list = ls())
+```---
+title: "Wheat Grain Dataset"
+author: "Dylan, Michael, and Johannes"
+date: "4/18/2022"
+output: html_document
+---
+
+## Import dataframes and normalize
+```{r}
+library(keras)
+library(tfdatasets)
+
+# Loading our data from CSV, duplicate for nomalized version
+seedsdf <- read.csv("seeds_dataset.csv")
+scaled_df <- read.csv("seeds_dataset.csv")
+
+# Various syntax for R dataframes
+summary(seedsdf)
+
+# Normalize data between 1 and 2
+for (i in 1:7) {
+  # Get the min and the max of the specific column
+  min <- min(seedsdf[, i])
+  max <- max(seedsdf[, i])
+  # Iterate through every element of that column to scale each value
+  for (j in 1:length(seedsdf[, i])) {
+    # Min-Max Normalization: (X – min(X)) / (max(X) – min(X))
+    scaled_df[j, i] <- ((seedsdf[j, i] - min) / (max - min)) + 1
+  }
+}
+```
+
+## Explore the distributions of feature values using kernel density plots, verify scaling
+```{r}
+for (i in 1:7) {
+  plot(density(scaled_df[, i]), names(scaled_df)[i])
+  plot(density(seedsdf[, i]), names(seedsdf)[i])
+}
+```
+
+## Explore correlation among features
+We should select one feature among each group of highly correlated features (>0.7?).
+```{r}
+# Use the R correlation function cor()
+# The all.obs option assumes our data frame has no missing values. Uses Pearson
+# correlation testing by default.
+write.table(round(cor(seedsdf), 3),
+  file = "feature_correlations.csv", sep = ",", append = F,
+  row.names = T, col.names = T
+)
+```
+
+## Train and test repeatedly
+```{r, include=FALSE} 
+# Set all of our constants for recording at the end
+loss_vect = c()
+accuracy_vect = c()
+sample_size <- 150
+layer_units <- 32
+model_loss <- "categorical_crossentropy"
+model_optimizer <- "adam"
+model_accuracy <- "accuracy"
+model_epochs <- 100
+model_loops <- 5
+select_df <- scaled_df[, c("Length", "Groove.Length", "Variety")]
+test_comment <- "Four hidd layers, one non-reg, learn rate 0.003, decay 0.00095"
+
+set.seed(1234) # Setting random seed for training/testing data split
+
+# Run the model for the amount of loops specified so we can get a better idea of its true performance
+for(i in 1:model_loops) {
+  picked <- sample(seq_len(nrow(select_df)), size = sample_size)
+  training <- select_df[picked, ]
+  testing <- select_df[-picked, ]
+  
+  # Changing y into categorical data (performing one-hot encoding)
+  training$Variety <- training$Variety - 1 # Standard is category count from 0
+  testing$Variety <- testing$Variety - 1
+  shape <- length(training) - 1
+  y_tr <- to_categorical(training$Variety, num_classes = 3)
+  y_test <- to_categorical(testing$Variety, num_classes = 3)
+  
+  ## Neural Network
+  model <- keras_model_sequential() %>%
+    layer_dense(units = layer_units, activation = "relu", input_shape = shape) %>%
+    layer_dense(units = layer_units, activation = "relu") %>%
+    layer_dense(units = layer_units, activation = "relu", kernel_regularizer = regularizer_l1_l2(l1 = 0.0025, l2 = 0.0025)) %>%
+    layer_dense(units = ncol(y_tr), activation = "softmax")
+  
+  model %>% compile(
+    loss = model_loss,
+    optimizer = optimizer_adam(learning_rate = 0.003, decay = 0.00095),
+    metrics = model_accuracy
+  )
+  
+  x_tr <- as.matrix(training[, 1:(length(training) -1)]) # need to convert to a matrix
+  x_test <- as.matrix(testing[, 1:(length(testing) -1)])
+  
+  model %>%
+    fit(
+      x = x_tr, # input is the training subsets
+      y = y_tr, # label is the last column
+      epochs = model_epochs
+    )
+  
+  # Test neural network
+  score <- model %>% evaluate(x_test, y_test, verbose = 0)
+
+  # Record its accuracy and loss before we loop so we can take the median later
+  loss_vect[i] <- round(score[1], 4)
+  accuracy_vect[i] <- round(score[2], 4)
+}
+
+accuracy_vect
+loss_vect
+
+```
+
+# Record Data
+```{r}
+
+# Table Data
+variable_content <- c(
+  sample_size, layer_units, model_epochs, model_loops, shape, toString(names(training[, 1:(length(training) -1)])),
+  median(loss_vect), median(accuracy_vect), test_comment # Record median of the loss and accuracy vectors
+)
+data <- matrix(variable_content, ncol = 9, byrow = TRUE)
+
+# Table labels
+colnames(data) <- c(
+  "Sample Size", "Layer Units", "Epochs", "Loops", "Input Shape", "Feature Selection",
   "Test Loss", "Test Accuracy", "Comment"
 )
 rownames(data) <- c(" ")
