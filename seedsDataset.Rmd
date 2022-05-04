@@ -56,14 +56,14 @@ write.table(round(cor(seedsdf), 3),
 loss_vect = c()
 accuracy_vect = c()
 sample_size <- 150
-layer_units <- 32
+layer_units <- 16
 model_loss <- "categorical_crossentropy"
 model_optimizer <- "adam"
 model_accuracy <- "accuracy"
-model_epochs <- 100
+model_epochs <- 75
 model_loops <- 5
 select_df <- scaled_df[, c("Length", "Groove.Length", "Variety")]
-test_comment <- "Four hidd layers, one non-reg, learn rate 0.004, decay 0.0001"
+test_comment <- "Two hidd layers, one non-reg, learn rate 0.03, decay 0.0028"
 
 set.seed(1234) # Setting random seed for training/testing data split
 
@@ -83,13 +83,12 @@ for(i in 1:model_loops) {
   ## Neural Network
   model <- keras_model_sequential() %>%
     layer_dense(units = layer_units, activation = "relu", input_shape = shape) %>%
-    layer_dense(units = layer_units, activation = "relu") %>%
-    layer_dense(units = layer_units, activation = "relu", kernel_regularizer = regularizer_l1_l2(l1 = 0.0025, l2 = 0.0025)) %>%
+    layer_dense(units = layer_units, activation = "relu", kernel_regularizer = regularizer_l1_l2(l1 = 0.0016, l2 = 0.0016)) %>%
     layer_dense(units = ncol(y_tr), activation = "softmax")
   
   model %>% compile(
     loss = model_loss,
-    optimizer = optimizer_adam(learning_rate = 0.004, decay = 0.0001),
+    optimizer = optimizer_adam(learning_rate = 0.03, decay = 0.0028),
     metrics = model_accuracy
   )
   
