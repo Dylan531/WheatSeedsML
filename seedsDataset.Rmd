@@ -50,8 +50,8 @@ write.table(round(cor(seedsdf), 3),
 )
 ```
 
-## Train and test repeatedly
-```{r, include=FALSE} 
+## Train and test repeatedly: low capacity model (enable/disable by setting eval to TRUE/FALSE )
+```{r, include=FALSE, eval = FALSE} 
 # Set all of our constants for recording at the end
 loss_vect = c()
 accuracy_vect = c()
@@ -115,6 +115,71 @@ loss_vect
 
 ```
 
+## Train and test repeatedly: high capacity model (enable/disable by setting eval to TRUE/FALSE )
+```{r, include=FALSE, eval = TRUE} 
+# Set all of our constants for recording at the end
+loss_vect = c()
+accuracy_vect = c()
+sample_size <- 150
+layer_units <- 64
+model_loss <- "categorical_crossentropy"
+model_optimizer <- "adam"
+model_accuracy <- "accuracy"
+model_epochs <- 100
+model_loops <- 5
+select_df <- scaled_df[, c("Length", "Groove.Length", "Compactness", "Variety")]
+test_comment <- "Four hidd layers, one non-reg, learn rate 0.005, decay 0.0007"
+
+set.seed(1234) # Setting random seed for training/testing data split
+
+# Run the model for the amount of loops specified so we can get a better idea of its true performance
+for(i in 1:model_loops) {
+  picked <- sample(seq_len(nrow(select_df)), size = sample_size)
+  training <- select_df[picked, ]
+  testing <- select_df[-picked, ]
+  
+  # Changing y into categorical data (performing one-hot encoding)
+  training$Variety <- training$Variety - 1 # Standard is category count from 0
+  testing$Variety <- testing$Variety - 1
+  shape <- length(training) - 1
+  y_tr <- to_categorical(training$Variety, num_classes = 3)
+  y_test <- to_categorical(testing$Variety, num_classes = 3)
+  
+  ## Neural Network
+  model <- keras_model_sequential() %>%
+    layer_dense(units = layer_units, activation = "relu", input_shape = shape) %>%
+    layer_dense(units = layer_units, activation = "relu") %>%
+    layer_dense(units = layer_units, activation = "relu", kernel_regularizer = regularizer_l1_l2(l1 = 0.0025, l2 = 0.0025)) %>%
+    layer_dense(units = ncol(y_tr), activation = "softmax")
+  
+  model %>% compile(
+    loss = model_loss,
+    optimizer = optimizer_adam(learning_rate = 0.005, decay = 0.0007),
+    metrics = model_accuracy
+  )
+  
+  x_tr <- as.matrix(training[, 1:(length(training) -1)]) # need to convert to a matrix
+  x_test <- as.matrix(testing[, 1:(length(testing) -1)])
+  
+  model %>%
+    fit(
+      x = x_tr, # input is the training subsets
+      y = y_tr, # label is the last column
+      epochs = model_epochs
+    )
+  
+  # Test neural network
+  score <- model %>% evaluate(x_test, y_test, verbose = 0)
+
+  # Record its accuracy and loss before we loop so we can take the median later
+  loss_vect[i] <- round(score[1], 4)
+  accuracy_vect[i] <- round(score[2], 4)
+}
+
+accuracy_vect
+loss_vect
+
+```
 # Record Data
 ```{r}
 
