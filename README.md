@@ -50,7 +50,8 @@ the training 5 times on different training/testing selections, and take the
 median loss and accuracy scores across runs. We found this step necessary as
 the loss and accuracy scores varied by more than 5% at times, making accessing
 both the absolute and relative performance of different training parameters
-difficult.
+difficult. We are using a feedforward neural network because that plays well with categorical classification data.
+We used softmax as opposed to sigmoid in the last category because we have more categories than two (so it's not a binary classification).
 
 ## Feature Selection: First Round
 
