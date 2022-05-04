@@ -56,3 +56,8 @@ Sample Size,Layer Units,Epochs,Loops,Input Shape,Feature Selection,Test Loss,Tes
 "150","64","500","7","3","Length, Compactness, Groove.Length","Five hidd layers, reg. last hidd lay","150","64"
 "150","16","75","5","2","Length, Groove.Length","0.2618","0.95","One hidd layers with reg., learn rate 0.03, decay 0.0028"
 "150","16","75","5","2","Length, Groove.Length","0.2482","0.9667","One hidd layers with reg., learn rate 0.03, decay 0.0028"
+"150","16","75","5","2","Length, Groove.Length","0.2325","0.95","One hidd layers with reg., learn rate 0.03, decay 0.0028"
+"150","16","75","5","2","Length, Groove.Length","0.2453","0.95","One hidd layers with reg., learn rate 0.03, decay 0.0028"
+"150","16","75","5","2","Length, Groove.Length","0.2562","0.95","One hidd layers with reg., learn rate 0.03, decay 0.0028"
+"150","16","75","5","2","Length, Groove.Length","0.2563","0.95","One hidd layers with reg., learn rate 0.03, decay 0.0028"
+"150","16","75","5","2","Length, Groove.Length","0.2539","0.9667","One hidd layers with reg., learn rate 0.03, decay 0.0028"
