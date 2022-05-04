@@ -63,7 +63,7 @@ model_accuracy <- "accuracy"
 model_epochs <- 75
 model_loops <- 5
 select_df <- scaled_df[, c("Length", "Groove.Length", "Variety")]
-test_comment <- "Two hidd layers, one non-reg, learn rate 0.03, decay 0.0028"
+test_comment <- "One hidd layers with reg., learn rate 0.03, decay 0.0028"
 
 set.seed(1234) # Setting random seed for training/testing data split
 
