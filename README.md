@@ -99,3 +99,9 @@ category).
 | 160 | 128 | cat. c. entrp | adam | accu. | 120 | 3   | Area, Compact., Groove L | 0.143 | 0.94 | Three hidd. layers |
 | 160 | 128 | cat. c. entrp | adam | accu. | 120 | 4   | Area, Compact., Groove L, Perim. | 0.153 | 0.96 | Sigmoid act. last hidd. layer |
 | 150 | 64  | cat. c. entrp | adam | accu.| 500 | 3   | Length, Compact., Groove L | 0.176 | 0.967 | Five hidd. layers, reg. last hidd lay |
+
+### Conclusions
+
+Do not underestimate feature selection.
+Evaluate single features, and combinations. Using two features that are not highly correlated may seem attractive, but if the one of the features is not very helpful in training for your objectives, combining it with the other might not help as much as you expect. Kernel length and the asymmetry coefficient, for example, were significantly less correlated than kernel length and groove length. Nevertheless, the kernel length and groove length pair proved to be more fruitful in training. 
+If your model doesn’t converge in training, or does so sporadically, a slow learning rate and high number epochs, combined with a high capacity may help significantly. Once the model starts overfitting, introduce regularization. Once testing performance is satisfactory, experiment with lower capacities, epoch numbers, and learning and learning decay rates.
